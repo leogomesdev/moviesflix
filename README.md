@@ -1,14 +1,20 @@
 # Movies Flix
 
-This application uses AI and MongoDB for embeddings vector search, as illustrated in the diagrams below:
+This application uses AI and MongoDB for embeddings vector search using movies data.
 
-![The rise of vector databases](docs/00.01-the-rise-of-vector-databases.png)
+![Movies page with results](docs/00.01-app-page.png)
 
-![Vector Search engines](docs/00.02-vector-search-engines.png)
+This application performs semantic searches, returning results that are contextually similar to the input query rather than relying solely on keyword matching.
+
+The general workflow of vector search is illustrated in the diagrams below:
+
+![The rise of vector databases](docs/00.02-the-rise-of-vector-databases.png)
+
+![Vector Search engines](docs/00.03-vector-search-engines.png)
 
 For more details, check out these resources:
-1. [Article: What are Vector Databases?](https://www.mongodb.com/resources/basics/databases/vector-databases)
-2. [Slides: Using MongoDB Atlas Vector Search for AI semantic search](https://docs.google.com/presentation/d/1dD7OFQCysE9c2B2NGd1ZMpWxBrNsfiBEcYLQJZ3RUDE/edit?usp=sharing)
+1. [Article: What are Vector Databases? - by MongoDB](https://www.mongodb.com/resources/basics/databases/vector-databases)
+2. [Slides: Using MongoDB Atlas Vector Search for AI semantic search - by Leonardo Gomes](https://docs.google.com/presentation/d/1dD7OFQCysE9c2B2NGd1ZMpWxBrNsfiBEcYLQJZ3RUDE/edit?usp=sharing)
 
 ## Technologies
 
@@ -24,6 +30,7 @@ For more details, check out these resources:
 - [MongoDB Compass](https://www.mongodb.com/products/tools/compass): Compass is a free tool for querying, optimizing, and analyzing MongoDB data, offering insights and a drag-and-drop pipeline builder.
 
 ## Requirements
+
 - Node.js version 23.6.1 or higher
 - OpenAI account and token
 - MongoDB Atlas account
@@ -36,6 +43,7 @@ For more details, check out these resources:
 3. Use the "Create new secret key" button and copy the API key.
 
 ### MongoDB Cluster Setup
+
 1. Go to [MongoDB Atlas](https://atlas.mongodb.com).
 2. Create a new project (e.g., "Movies Flix") and use the "Create a Cluster" option:
   ![Create MongoDB Cluster](docs/01.01-create-mongodb-cluster.png)
@@ -43,43 +51,45 @@ For more details, check out these resources:
   ![Select Free MongoDB Cluster and Preload sample dataset](docs/01.02-creating-free-cluster-with-sample-dataset.png)
 4. Use the "Create Deployment" button and wait for the cluster to be created.
 5. Manage database access:
-  1. Copy the database username and password.
-  2. Navigate to SECURITY > Database Access to manage users.
-  3. Navigate to SECURITY > Network Access to manage IP addresses (you may temporarily allow `0.0.0.0` for development).
+   1. Copy the database username and password.
+   2. Navigate to SECURITY > Database Access to manage users.
+   3. Navigate to SECURITY > Network Access to manage IP addresses (you may temporarily allow `0.0.0.0` for development).
 6. Connect to your database using MongoDB Compass:
   ![After the success message, use the Connect button](docs/01.03-success-message-and-connect-button.png)
   ![Using MongoDB Compass to connect to the cluster](docs/01.04-setting-a-new-connection-with-mongodb-compass.png)
-7. Navigate to the `sample_mflix.movies` collection and clean up the data:
+7. Navigate to the `sample_mflix.movies` collection, use the `Open MongoDB shell` button on the top-right, and run this command to clean up part of the data:
   ```js
   db["movies"].deleteMany({ $or: [{ "runtime": { $exists: false } }, { "genres": { $exists: false } }, { "plot": { $exists: false } }, { "directors": { $exists: false } }, { "poster": { $exists: false } }, { "cast": { $exists: false } }, { "languages": { $exists: false } }] })
   ```
-8. Drop other `sample_*` databases if needed to save space.
+8. Drop other `sample_*` databases in order to save storage space.
 9. Refresh to check the number of documents:
   ![Using MongoDB Compass to explore the data](docs/01.05-using-compass-to-explore-the-data.png)
 
 ### MongoDB Atlas Vector Search Index Setup
+
 1. In MongoDB Atlas, go to Atlas Search > Go to Atlas Search:
   ![Accessing MongoDB Atlas Search](docs/02.01-atlas-search-initial-page.png)
 2. Click "Create Search Index" > Atlas Vector Search JSON Editor > Next:
   1. Database and Collection: Select `sample_mflix > movies`
   2. Index Name: `vectorsearch`
   3. Use the following JSON definition and click "Next" > "Create Vector Search Index":
-    ```js
-    {
-      "fields": [
-       {
-        "numDimensions": 1536,
-        "path": "embeddings",
-        "similarity": "cosine",
-        "type": "vector"
-       }
-      ]
-    }
-    ```
+      ````js
+      {
+        "fields": [
+        {
+          "numDimensions": 1536,
+          "path": "embeddings",
+          "similarity": "cosine",
+          "type": "vector"
+        }
+        ]
+      }
+      ````
 
 ## Running the Application
 
 ### Backend
+
 1. Run `cd server && cp -v .env.example .env`
 2. Update the environment variables in the `.env` file.
 3. If using [nvm](https://github.com/nvm-sh/nvm), run: `nvm use`
@@ -87,6 +97,7 @@ For more details, check out these resources:
 5. Run `npm run start:dev`
 
 ### Frontend
+
 1. Run `cd client && cp -v .env.example .env`
 2. Update the environment variables in the `.env` file.
 3. If using [nvm](https://github.com/nvm-sh/nvm), run: `nvm use`
@@ -94,6 +105,7 @@ For more details, check out these resources:
 5. Run `npm run dev`
 
 ### Creating Embeddings
+
 To add embeddings data to the `sample_mflix.movies` collection, run:
 ```bash
 curl -X POST http://localhost:3001/movies/createEmbeddings -H "Content-Type: application/json" -d '{}'
@@ -168,5 +180,3 @@ Check the status of your Atlas Search index:
       ]
       ```
 4. **Retrieve Results**: MongoDB returns the most relevant documents based on vector similarity, which are then displayed to the user.
-
-This process allows the application to perform semantic searches, returning results that are contextually similar to the input query rather than relying solely on keyword matching.
