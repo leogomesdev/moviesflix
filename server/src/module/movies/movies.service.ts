@@ -97,7 +97,7 @@ export class MoviesService {
    * @private
    */
   private async getEmbeddingForMovie(movie: Movie): Promise<number[]> {
-    const input = `${movie.type}: ${movie.title}. Full Plot: ${movie.fullplot}. Genres: ${movie.genres?.join(', ') || 'unknown'}. Cast: ${movie.cast?.join(', ') || 'unknown'}. Directors: ${movie.directors?.join(', ') || 'unknown'}. Languages: ${movie.languages?.join(', ') || 'unknown'}. Year: ${movie.year}. Runtime: ${movie.runtime}. IMDB Rating: ${movie.imdb?.rating || 'unknown'}. IMDB Votes: ${movie.imdb?.votes || 'unknown'}`;
+    const input = `${movie.type}: ${movie.title}. Plot: ${movie.fullplot || movie.plot} Genres: ${movie.genres?.join(', ') || 'unknown'}. Cast: ${movie.cast?.join(', ') || 'unknown'}. Directors: ${movie.directors?.join(', ') || 'unknown'}. Languages: ${movie.languages?.join(', ') || 'unknown'}. Year: ${movie.year}. Runtime: ${movie.runtime}. IMDB Rating: ${movie.imdb?.rating || 'unknown'}. IMDB Votes: ${movie.imdb?.votes || 'unknown'}.`;
     const embeddings = await this.openAiService.generateEmbeddings(input);
     return embeddings;
   }
