@@ -1,5 +1,4 @@
 import { Controller, Get, Post, Query, ValidationPipe } from '@nestjs/common';
-import type { Document } from 'mongodb';
 
 import { Movie } from './models/movie';
 import { MoviesService } from './movies.service';
