@@ -3,15 +3,9 @@
 import { useState, ChangeEvent } from "react"; // Import useState and ChangeEvent from React
 import { Input } from "@/components/ui/input"; // Import custom Input component
 import { Button } from "@/components/ui/button"; // Import custom Button component
-import {
-  CalendarIcon,
-  ClockIcon,
-  StarIcon,
-  UsersIcon,
-} from "lucide-react"; // Import icons from lucide-react
+import { CalendarIcon, ClockIcon, StarIcon, UsersIcon } from "lucide-react"; // Import icons from lucide-react
 import Image from "next/image"; // Import Next.js Image component
 import { Spinner } from "@/components/ui/spinner";
-import { capitalizeFirstLetter } from "@/lib/utils";
 import { formatRuntime } from "../lib/utils";
 
 // Define the MovieDetails type
@@ -60,8 +54,8 @@ export default function MovieSearch() {
         throw new Error(data.Error);
       }
       setMovieDetails(data); // Set movie details state with the fetched data
-    } catch (error: any) {
-      setError(error.message); // Set error state with the error message
+    } catch (error) {
+      setError((error as Error).message); // Set error state with the error message
     } finally {
       setLoading(false); // Set loading to false after fetching data
     }
