@@ -10,9 +10,10 @@ import { OpenAiModule } from './module/open-ai/open-ai.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    // https://github.com/Tony133/nestjs-mongodb-driver
     MongoDbDriverModule.forRoot({
       url: process.env.MONGO_CONNECTION_STRING!,
-  }),
+    }),
     MoviesModule,
     OpenAiModule,
   ],
