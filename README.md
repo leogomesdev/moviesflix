@@ -2,15 +2,21 @@
 
 This application uses AI and MongoDB for embeddings vector search using movies data.
 
-![Movies page with results](docs/00.01-app-page.png)
-
 This application performs semantic searches, returning results that are contextually similar to the input query rather than relying solely on keyword matching.
 
-The general workflow of vector search is illustrated in the diagrams below:
+![Movies page with results](docs/00.01-app-page.png)
 
-![The rise of vector databases](docs/00.02-the-rise-of-vector-databases.png)
+## System Architecture
 
-![Vector Search engines](docs/00.03-vector-search-engines.png)
+The general workflow for this application is illustrated in the diagrams below:
+
+### Searching Based on a Given Prompt:
+
+![System architecture for searching](docs/00.02-flowchart-system-architecture-searching-from-given-prompt.jpg)
+
+### Generating Embedding Vectors for Existing Data:
+
+![System architecture to add embeddings to the existing dataset](docs/00.03-flowchart-system-architecture-adding-embeddings-to-dataset.jpg)
 
 For more details, check out these resources:
 1. [Article: What are Vector Databases? - by MongoDB](https://www.mongodb.com/resources/basics/databases/vector-databases)
