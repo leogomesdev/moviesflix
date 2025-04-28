@@ -19,8 +19,9 @@ The general workflow for this application is illustrated in the diagrams below:
 ![System architecture to add embeddings to the existing dataset](docs/00.03-flowchart-system-architecture-adding-embeddings-to-dataset.jpg)
 
 For more details, check out these resources:
-1. [Article: What are Vector Databases? - by MongoDB](https://www.mongodb.com/resources/basics/databases/vector-databases)
-2. [Slides: Using MongoDB Atlas Vector Search for AI semantic search - by Leonardo Gomes](https://docs.google.com/presentation/d/1dD7OFQCysE9c2B2NGd1ZMpWxBrNsfiBEcYLQJZ3RUDE/edit?usp=sharing)
+1. <a href="https://www.mongodb.com/resources/basics/databases/vector-databases" target="_blank">Article: What are Vector Databases? - by MongoDB</a>
+2. [January 2025 - Slides: Using MongoDB Atlas Vector Search for AI semantic search - by Leonardo Gomes](https://docs.google.com/presentation/d/1dD7OFQCysE9c2B2NGd1ZMpWxBrNsfiBEcYLQJZ3RUDE)
+3. [April 2025 - Slides: Smarter Movie Picks with MongoDB Atlas Vector Search - by Leonardo Gomes](https://docs.google.com/presentation/d/1MhMsT-BCvkfvq29MjbPpvMJ6kjS5MTsr7oBNTc7lzkI)
 
 ## Technologies
 
@@ -38,7 +39,7 @@ For more details, check out these resources:
 ## Requirements
 
 - Node.js version 23.6.1 or higher
-- OpenAI account and token
+- OpenAI account and API token
 - MongoDB Atlas account
 
 ## Setup Instructions
@@ -67,7 +68,7 @@ For more details, check out these resources:
   ```js
   db["movies"].deleteMany({ $or: [{ "runtime": { $exists: false } }, { "genres": { $exists: false } }, { "plot": { $exists: false } }, { "directors": { $exists: false } }, { "poster": { $exists: false } }, { "cast": { $exists: false } }, { "languages": { $exists: false } }] })
   ```
-8. Drop other `sample_*` databases in order to save storage space.
+8. Drop other `sample_*` databases to save storage space.
 9. Refresh to check the number of documents:
   ![Using MongoDB Compass to explore the data](docs/01.05-using-compass-to-explore-the-data.png)
 
@@ -83,9 +84,9 @@ For more details, check out these resources:
       {
         "fields": [
         {
-          "numDimensions": 1536,
-          "path": "embeddings",
-          "similarity": "cosine",
+          "numDimensions": 1536, // -> this is the number of dimensions from model text-embedding-ada-002
+          "path": "embeddings", // -> this is the field name in the database collection
+          "similarity": "cosine", // -> one of the Similarity algorithms supported by MongoDB Atlas Vector Search
           "type": "vector"
         }
         ]
